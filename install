@@ -1,0 +1,56 @@
+#!/bin/bash
+INSTALLDIR=/usr/bin/ostara			# Installation directory
+CONFIGDIR=/etc/ostara				# Config file directory
+
+if [ $(id -u) -eq 0 ]; then
+	while true; do
+		read -p "This program will install the Ostara Server on this device. Do you wish to continue? [y/n] " yn
+		case $yn in
+			[Yy]* )
+				if [ -d ${INSTALLDIR} ]; then
+					read -p "Directory ${INSTALLDIR} already exists. Overwrite? [y/N] " yn
+					if [ ${yn} = "y" -o ${yn} = "Y" ]; then
+						echo "Continuing installation to ${INSTALLDIR}"
+					else
+						echo "Aborting installation to ${INSTALLDIR}"
+						exit
+					fi
+
+				fi
+
+				echo "Adding user 'ostara'"
+				#This command also creates the install directory.
+#				useradd -d ${INSTALLDIR} -m -U -s /usr/sbin/nologin -r -G ostara ostara
+				useradd -d ${INSTALLDIR} -m -U -s /usr/sbin/nologin -r ostara
+				echo "Copying program files"
+				mkdir -p ${INSTALLDIR}
+				mkdir -p ${CONFIGDIR}
+				cp ./build/Ostara.jar ${INSTALLDIR}
+				cp ./examples/ostara.conf ${CONFIGDIR}
+				cp ./examples/keystore.jks ${CONFIGDIR}
+				cp ./sys/start.sh ${INSTALLDIR}
+				chmod +x ${INSTALLDIR}/start.sh
+				echo "Adding ostara service"
+				cp ./sys/ostara.service /etc/systemd/system/
+				echo "Moving config file to ${CONFIGLOCATION}"
+				ln -s ${INSTALLDIR}/ostara.conf ${CONFIGDIR}/ostara.conf
+				ln -s ${INSTALLDIR}/keystore.jks ${CONFIGDIR}/keystore.jks
+				echo "Enabling ostara service"
+				systemctl enable ostara
+				echo "Starting ostara service"
+				systemctl start ostara
+				echo "Installation complete. Thank you."
+
+				break;;
+			[Nn]* )
+				echo "Aborting install. No changes were made."
+				exit;;
+			* ) echo "Invalid response.";;
+		esac
+	done
+
+
+
+else
+	echo "Installation is not possible without root access."
+fi

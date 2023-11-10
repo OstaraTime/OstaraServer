@@ -12,3 +12,5 @@ leakproof:
 	cd build && java -Xmx64M ${MAINCLASS}
 buildjar:
 	cd build && jar cfM ${OUTJAR} *
+install:
+	bash install

@@ -1,0 +1,16 @@
+[Unit]
+Description=Ostara Server
+DefaultDependencies=false
+
+[Service]
+User=ostara
+Group=ostara
+WorkingDirectory=/usr/bin/ostara
+ExecStart=/usr/bin/ostara/start.sh
+Restart=always
+RestartSec=20
+RestartPreventExitStatus=0
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target
