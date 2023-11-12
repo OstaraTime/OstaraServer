@@ -37,7 +37,7 @@ public class Client{
 		DecodedJWT decodedJWT;
 		try{
 			Algorithm algorithm = Algorithm.HMAC512(this.auth);
-			JWTVerifier verifier = JWT.require(algorithm).withIssuer(Main.getJWTIssuer()).build();
+			JWTVerifier verifier = JWT.require(algorithm).withIssuer(Main.getJWTIssuer()).acceptLeeway(Main.getJWTLeeway()).build();
 			decodedJWT = verifier.verify(token);
 		}catch(JWTVerificationException e){
 			return false;

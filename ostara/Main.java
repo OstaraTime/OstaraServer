@@ -25,8 +25,9 @@ public class Main{
 	private static int port;
 	private static String JWTIssuer;
 	private static String JWTSecret;
+	private static int JWTLeeway;
 
-	private static final String VERSION = "1";
+	private static final String VERSION = "1.0.1";
 
 
 	public static String getJWTIssuer(){
@@ -35,6 +36,10 @@ public class Main{
 
 	public static String getJWTSecret(){
 		return JWTSecret;
+	}
+
+	public static int getJWTLeeway(){
+		return JWTLeeway;
 	}
 
 	public static void main(String[] args){
@@ -63,6 +68,7 @@ public class Main{
 			port = Integer.valueOf(conf.getProperty("ostara.port"));
 			JWTIssuer = conf.getProperty("ostara.JWTIssuer");
 			JWTSecret = conf.getProperty("ostara.JWTSecret");
+			JWTLeeway = Integer.valueOf(conf.getProperty("ostara.JWTLeeway"));
 		}catch (FileNotFoundException ex){
 			System.out.printf("FATAL: Config file %s not found.\n", configFile);
 			System.exit(1);

@@ -11,6 +11,6 @@ clean:
 leakproof:
 	cd build && java -Xmx64M ${MAINCLASS}
 buildjar:
-	cd build && jar cfM ${OUTJAR} *
+	cd build && jar cfM ${OUTJAR} com org ostara META-INF
 install:
 	bash install
