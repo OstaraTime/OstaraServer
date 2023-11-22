@@ -27,7 +27,7 @@ public class Main{
 	private static String JWTSecret;
 	private static int JWTLeeway;
 
-	private static final String VERSION = "1.0.1";
+	private static final String VERSION = "1.0.2";
 
 
 	public static String getJWTIssuer(){

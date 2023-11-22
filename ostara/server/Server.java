@@ -95,6 +95,8 @@ public class Server{
 			jwt = new JWT();
 			Algorithm algorithm = Algorithm.HMAC512(Main.getJWTSecret());
 
+
+/*
 			// Set up request handlers
 			httpsServer.createContext("/", (HttpExchange exchange) -> {
 				String response = "Hello, this is the Ostara API server.";
@@ -102,6 +104,8 @@ public class Server{
 				exchange.getResponseBody().write(response.getBytes());
 				exchange.close();
 			});
+*/
+
 
 			 httpsServer.createContext("/api", (HttpExchange exchange) -> {
 				StringBuilder log = new StringBuilder("Request recieved. ");
@@ -140,6 +144,9 @@ public class Server{
 							case "getEventTypes":
 								log.append(String.format("event types requested by: client %s", decodedJWT.getClaim("client")));
 								response = JWT.create().withIssuer(Main.getJWTIssuer()).withClaim("eventTypeNames", Data.getEventTypeNames()).sign(algorithm);
+								break;
+							case "ping":
+								response = JWT.create().withIssuer(Main.getJWTIssuer()).withClaim("status", "pong").sign(algorithm);
 								break;
 							default:
 								response = String.format("Illegal action: %s\n", action);
